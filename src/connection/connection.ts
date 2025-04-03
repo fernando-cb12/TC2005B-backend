@@ -6,7 +6,7 @@ const connection = new Sequelize({
   database: "Registec",
   dialect: "mysql",
   username: "admin",
-  password: "admin",
+  password: "",
   storage: ":memory:",
   models: [User],
 });
