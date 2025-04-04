@@ -4,11 +4,11 @@ import { Product } from "../models/product";
 
 const connection = new Sequelize({
   database: "Registec",
-  dialect: "mysql",
+  dialect: "postgres",
   username: "admin",
-  password: "",
+  password: "12345",
   storage: ":memory:",
-  models: [User],
+  models: [User, Product],
 });
 
 async function connectionDB() {

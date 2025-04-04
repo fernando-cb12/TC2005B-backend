@@ -1,10 +1,4 @@
-import {
-  Table,
-  Model,
-  Column,
-  CreatedAt,
-  DataType,
-} from "sequelize-typescript";
+import { Table, Model, Column, DataType } from "sequelize-typescript";
 import { Optional } from "sequelize";
 
 export interface ProductAttributes {
@@ -13,6 +7,7 @@ export interface ProductAttributes {
   identifier: number;
   price: number;
   stock: number;
+  category: string;
 }
 
 interface ProductCreationAttributes extends Optional<ProductAttributes, "id"> {}
@@ -21,7 +16,10 @@ export class Product
   extends Model<ProductAttributes, ProductCreationAttributes>
   implements ProductAttributes
 {
-  @Column
+  @Column({
+    primaryKey: true, // Add this line
+    // other attributes...
+  })
   id!: number;
 
   @Column
@@ -35,4 +33,7 @@ export class Product
 
   @Column
   stock!: number;
+
+  @Column
+  category!: string;
 }
