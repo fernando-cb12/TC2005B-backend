@@ -5,6 +5,7 @@ interface UserAttributes {
   id: number;
   name: string;
   email: string;
+  password: string;
 }
 
 interface userCreationAttributes extends Optional<UserAttributes, "id"> {}
@@ -16,6 +17,9 @@ export class User extends Model<UserAttributes, userCreationAttributes> {
 
   @Column
   emai?: string;
+
+  @Column
+  password!: string;
 
   @CreatedAt
   @Column

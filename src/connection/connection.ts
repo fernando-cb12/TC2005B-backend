@@ -8,7 +8,7 @@ const connection = new Sequelize({
   dialect: "mysql",
   username: "root",
   password: "12345",
-  models: [Supplier],
+  models: [Supplier, User, Product],
 });
 
 async function connectionDB() {

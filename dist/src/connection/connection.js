@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
+
 const supplier_1 = require("../models/supplier");
 const connection = new sequelize_typescript_1.Sequelize({
     database: "registec",
@@ -17,6 +18,7 @@ const connection = new sequelize_typescript_1.Sequelize({
     username: "root",
     password: "12345",
     models: [supplier_1.Supplier],
+
 });
 function connectionDB() {
     return __awaiter(this, void 0, void 0, function* () {

@@ -34,6 +34,11 @@ __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", Number)
 ], Product.prototype, "stock", void 0);
+
+__decorate([
+    sequelize_typescript_1.Column,
+    __metadata("design:type", String)
+], Product.prototype, "category", void 0);
 exports.Product = Product = __decorate([
     (0, sequelize_typescript_1.Table)({ tableName: "products" })
 ], Product);
