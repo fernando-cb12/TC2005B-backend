@@ -1,16 +1,16 @@
-import express from "express";
-import cors from "cors";
+import express, { Express } from "express";
+//import cors from "cors";
+import apiRouter from "./src/routes";
+import connectionDB from "./src/connection/connection";
 
-const app = express();
-app.use(cors());
+const morgan = require("morgan");
+const app: Express = express();
+const port = 3000;
+app.use(morgan("dev"));
 app.use(express.json());
+app.use(apiRouter);
+connectionDB();
 
-const PORT = process.env.PORT || 3000;
-
-app.get("/", (req, res) => {
-  res.send("API funcionando...");
-});
-
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+app.listen(port, () => {
+  console.log(`Servidor corriendo en http://localhost:${port}`);
 });

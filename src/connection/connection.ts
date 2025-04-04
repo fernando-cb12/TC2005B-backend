@@ -1,14 +1,14 @@
 import { Sequelize } from "sequelize-typescript";
 import { User } from "../models/user";
 import { Product } from "../models/product";
+import { Supplier } from "../models/supplier";
 
 const connection = new Sequelize({
-  database: "Registec",
+  database: "registec",
   dialect: "mysql",
-  username: "admin",
-  password: "",
-  storage: ":memory:",
-  models: [User],
+  username: "root",
+  password: "12345",
+  models: [Supplier],
 });
 
 async function connectionDB() {
