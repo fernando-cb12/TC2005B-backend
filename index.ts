@@ -1,16 +1,19 @@
-import express from "express";
+import express, { Express } from "express";
+import apiRouter from "./src/routes";
+import connectionDB from "./src/connection/connection";
+import morgan from "morgan";
 import cors from "cors";
 
-const app = express();
+const app: Express = express();
+const port = 3000;
+
 app.use(cors());
+app.use(morgan("dev"));
 app.use(express.json());
+app.use(apiRouter);
 
-const PORT = process.env.PORT || 3000;
+connectionDB();
 
-app.get("/", (req, res) => {
-  res.send("API funcionando...");
-});
-
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+app.listen(port, () => {
+  console.log(`Example app listening on http://localhost:${port}`);
 });

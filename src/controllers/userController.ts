@@ -1,64 +1,125 @@
-import { Request, Response } from "express";
+import e, { Request, RequestHandler, Response } from "express";
 import { User } from "../models/user";
 
-export const userController = {
-  async createUser(req: Request, res: Response) {
-    try {
-      const { name, email } = req.body;
-      const newUser = await User.create({ name, email });
-      res.status(201).json(newUser);
-    } catch (error) {
-      res.status(500).json({ error: "Error creating user" });
-    }
-  },
-
-  async getUsers(req: Request, res: Response) {
-    try {
-      const users = await User.findAll();
-      res.status(200).json(users);
-    } catch (error) {
-      res.status(500).json({ error: "Error fetching users" });
-    }
-  },
-
-  async getUserById(req: Request, res: Response) {
-    try {
-      const { id } = req.params;
-      const user = await User.findByPk(id);
-      if (!user) {
-        return res.status(404).json({ error: "User not found" });
-      }
-      res.status(200).json(user);
-    } catch (error) {
-      res.status(500).json({ error: "Error fetching user" });
-    }
-  },
-  async updateUser(req: Request, res: Response) {
-    try {
-      const { id } = req.params;
-      const { name, email } = req.body;
-      const user = await User.findByPk(id);
-      if (!user) {
-        return res.status(404).json({ error: "User not found" });
-      }
-      await user.update({ name, email });
-      res.status(200).json(user);
-    } catch (error) {
-      res.status(500).json({ error: "Error updating user" });
-    }
-  },
-
-  async deleteUser(req: Request, res: Response) {
-    try {
-      const { id } = req.params;
-      const user = await User.findByPk(id);
-      if (!user) {
-        return res.status(404).json({ error: "User not found" });
-      }
-      await user.destroy();
-      res.status(204).send();
-    } catch (error) {
-      res.status(500).json({ error: "Error deleting user" });
-    }
-  },
+const createUser: RequestHandler = (req: Request, res: Response) => {
+  if (!req.body) {
+    res.status(400).json({
+      status: "error",
+      message: "Content cannot be empty!",
+      payload: null,
+    });
+  }
+  const user = { ...req.body };
+  User.create(user)
+    .then((data) => {
+      res.status(201).json({
+        status: "success",
+        message: "User created successfully",
+        payload: data,
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({
+        status: "error",
+        message: "Error creating user",
+        payload: error,
+      });
+    });
 };
+
+const getUsers: RequestHandler = (req: Request, res: Response) => {
+  User.findAll()
+    .then((data: User[]) => {
+      res.status(200).json({
+        status: "success",
+        message: "Users retrieved successfully",
+        payload: data,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        status: "error",
+        message: "Error retrieving users",
+        payload: err,
+      });
+    });
+};
+
+const getUserById: RequestHandler = (req: Request, res: Response) => {
+  User.findByPk(req.params.id)
+    .then((data: User | null) => {
+      return res.status(200).json({
+        status: "success",
+        message: "User retrieved successfully",
+        payload: data,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        status: "error",
+        message: "Error retrieving user",
+        payload: err,
+      });
+    });
+};
+
+const updateUser: RequestHandler = (req: Request, res: Response) => {
+  if (!req.body) {
+    res.status(400).json({
+      status: "error",
+      message: "Content cannot be empty!",
+      payload: null,
+    });
+  }
+  User.update(req.body, { where: { id: req.params.id } })
+    .then((isUpdated) => {
+      if (isUpdated) {
+        res.status(200).json({
+          status: "success",
+          message: "User updated successfully",
+          payload: { ...req.body },
+        });
+      } else {
+        res.status(500).json({
+          status: "error",
+          message: "Error updating user",
+          payload: null,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        status: "error",
+        message: "Error updating user",
+        payload: null,
+      });
+    });
+};
+
+const deleteUser: RequestHandler = (req: Request, res: Response) => {
+  User.destroy({ where: { id: req.params.id } })
+    .then((isDeleted) => {
+      if (isDeleted) {
+        res.status(200).json({
+          status: "success",
+          message: "User deleted successfully",
+          payload: null,
+        });
+      } else {
+        res.status(500).json({
+          status: "error",
+          message: "Error deleting user",
+          payload: null,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        status: "error",
+        message: "Error deleting user",
+        payload: null,
+      });
+    });
+};
+
+export { createUser, getUsers, getUserById, updateUser, deleteUser };
