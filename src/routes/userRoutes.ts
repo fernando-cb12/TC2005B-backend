@@ -8,7 +8,6 @@ import {
 import { Router } from "express";
 
 const userRouter = Router();
-
 userRouter.post("/", createUser);
 userRouter.get("/", getUsers);
 userRouter.get("/:id", getUserById);

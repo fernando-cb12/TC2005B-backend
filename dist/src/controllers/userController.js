@@ -1,127 +1,86 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUser = exports.getUserById = exports.getUsers = exports.createUser = void 0;
+exports.userController = void 0;
 const user_1 = require("../models/user");
-const createUser = (req, res) => {
-    if (!req.body) {
-        res.status(400).json({
-            status: "error",
-            message: "Content cannot be empty!",
-            payload: null,
+exports.userController = {
+    createUser(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { name, email } = req.body;
+                const newUser = yield user_1.User.create({ name, email });
+                res.status(201).json(newUser);
+            }
+            catch (error) {
+                res.status(500).json({ error: "Error creating user" });
+            }
         });
-    }
-    const user = Object.assign({}, req.body);
-    user_1.User.create(user)
-        .then((data) => {
-        res.status(201).json({
-            status: "success",
-            message: "User created successfully",
-            payload: data,
+    },
+    getUsers(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const users = yield user_1.User.findAll();
+                res.status(200).json(users);
+            }
+            catch (error) {
+                res.status(500).json({ error: "Error fetching users" });
+            }
         });
-    })
-        .catch((error) => {
-        res.status(500).json({
-            status: "error",
-            message: "Error creating user",
-            payload: error,
+    },
+    getUserById(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                const user = yield user_1.User.findByPk(id);
+                if (!user) {
+                    return res.status(404).json({ error: "User not found" });
+                }
+                res.status(200).json(user);
+            }
+            catch (error) {
+                res.status(500).json({ error: "Error fetching user" });
+            }
         });
-    });
+    },
+    updateUser(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                const { name, email } = req.body;
+                const user = yield user_1.User.findByPk(id);
+                if (!user) {
+                    return res.status(404).json({ error: "User not found" });
+                }
+                yield user.update({ name, email });
+                res.status(200).json(user);
+            }
+            catch (error) {
+                res.status(500).json({ error: "Error updating user" });
+            }
+        });
+    },
+    deleteUser(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                const user = yield user_1.User.findByPk(id);
+                if (!user) {
+                    return res.status(404).json({ error: "User not found" });
+                }
+                yield user.destroy();
+                res.status(204).send();
+            }
+            catch (error) {
+                res.status(500).json({ error: "Error deleting user" });
+            }
+        });
+    },
 };
-exports.createUser = createUser;
-const getUsers = (req, res) => {
-    user_1.User.findAll()
-        .then((data) => {
-        res.status(200).json({
-            status: "success",
-            message: "Users retrieved successfully",
-            payload: data,
-        });
-    })
-        .catch((err) => {
-        res.status(500).json({
-            status: "error",
-            message: "Error retrieving users",
-            payload: err,
-        });
-    });
-};
-exports.getUsers = getUsers;
-const getUserById = (req, res) => {
-    user_1.User.findByPk(req.params.id)
-        .then((data) => {
-        return res.status(200).json({
-            status: "success",
-            message: "User retrieved successfully",
-            payload: data,
-        });
-    })
-        .catch((err) => {
-        res.status(500).json({
-            status: "error",
-            message: "Error retrieving user",
-            payload: err,
-        });
-    });
-};
-exports.getUserById = getUserById;
-const updateUser = (req, res) => {
-    if (!req.body) {
-        res.status(400).json({
-            status: "error",
-            message: "Content cannot be empty!",
-            payload: null,
-        });
-    }
-    user_1.User.update(req.body, { where: { id: req.params.id } })
-        .then((isUpdated) => {
-        if (isUpdated) {
-            res.status(200).json({
-                status: "success",
-                message: "User updated successfully",
-                payload: Object.assign({}, req.body),
-            });
-        }
-        else {
-            res.status(500).json({
-                status: "error",
-                message: "Error updating user",
-                payload: null,
-            });
-        }
-    })
-        .catch((err) => {
-        res.status(500).json({
-            status: "error",
-            message: "Error updating user",
-            payload: null,
-        });
-    });
-};
-exports.updateUser = updateUser;
-const deleteUser = (req, res) => {
-    user_1.User.destroy({ where: { id: req.params.id } })
-        .then((isDeleted) => {
-        if (isDeleted) {
-            res.status(200).json({
-                status: "success",
-                message: "User deleted successfully",
-                payload: null,
-            });
-        }
-        else {
-            res.status(500).json({
-                status: "error",
-                message: "Error deleting user",
-                payload: null,
-            });
-        }
-    })
-        .catch((err) => {
-        res.status(500).json({
-            status: "error",
-            message: "Error deleting user",
-            payload: null,
-        });
-    });
-};
-exports.deleteUser = deleteUser;

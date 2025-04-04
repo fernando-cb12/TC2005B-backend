@@ -1,4 +1,5 @@
 import express, { Express } from "express";
+
 import apiRouter from "./src/routes";
 import connectionDB from "./src/connection/connection";
 import morgan from "morgan";
@@ -16,4 +17,5 @@ connectionDB();
 
 app.listen(port, () => {
   console.log(`Example app listening on http://localhost:${port}`);
+
 });

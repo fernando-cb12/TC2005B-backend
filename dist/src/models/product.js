@@ -34,6 +34,7 @@ __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", Number)
 ], Product.prototype, "stock", void 0);
+
 __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", String)

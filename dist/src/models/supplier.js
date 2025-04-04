@@ -9,30 +9,33 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
+exports.Supplier = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
-let User = class User extends sequelize_typescript_1.Model {
+let Supplier = class Supplier extends sequelize_typescript_1.Model {
 };
-exports.User = User;
+exports.Supplier = Supplier;
 __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", String)
-], User.prototype, "name", void 0);
+], Supplier.prototype, "name", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING),
     __metadata("design:type", String)
-], User.prototype, "emai", void 0);
+], Supplier.prototype, "address", void 0);
 __decorate([
-
-    sequelize_typescript_1.Column,
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING),
     __metadata("design:type", String)
-], User.prototype, "password", void 0);
+], Supplier.prototype, "phoneNumber", void 0);
 __decorate([
-
     sequelize_typescript_1.CreatedAt,
     sequelize_typescript_1.Column,
     __metadata("design:type", Date)
-], User.prototype, "createdAt", void 0);
-exports.User = User = __decorate([
-    (0, sequelize_typescript_1.Table)({ tableName: "users" })
-], User);
+], Supplier.prototype, "createdAt", void 0);
+__decorate([
+    sequelize_typescript_1.UpdatedAt,
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Date)
+], Supplier.prototype, "updatedAt", void 0);
+exports.Supplier = Supplier = __decorate([
+    (0, sequelize_typescript_1.Table)({ tableName: "Suppliers" })
+], Supplier);
