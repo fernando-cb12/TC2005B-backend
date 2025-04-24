@@ -4,10 +4,10 @@ import { Product } from "../models/product";
 import { Supplier } from "../models/supplier";
 
 const connection = new Sequelize({
-  database: "registec",
-  dialect: "mysql",
-  username: "root",
-  password: "12345",
+  database: "Registec",
+  dialect: "postgres",
+  username: "sisweb_user",
+  password: "HDK#$%Ljkwerff.89",
   models: [Supplier, User, Product],
 });
 

@@ -6,6 +6,6 @@ const productRouter = (0, express_1.Router)();
 productRouter.post("/", productController_1.createProduct);
 productRouter.get("/", productController_1.getProducts);
 productRouter.get("/:category", productController_1.getProductByCategory);
-productRouter.put("/:id", productController_1.updateProduct);
+productRouter.patch("/:id", productController_1.updateProduct);
 productRouter.delete("/:id", productController_1.deleteProduct);
 exports.default = productRouter;

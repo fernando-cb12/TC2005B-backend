@@ -23,12 +23,10 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "emai", void 0);
 __decorate([
-
     sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
-
     sequelize_typescript_1.CreatedAt,
     sequelize_typescript_1.Column,
     __metadata("design:type", Date)

@@ -9,12 +9,12 @@ const createProduct: RequestHandler = (req: Request, res: Response) => {
       payload: null,
     });
   }
-  const user = { ...req.body };
-  Product.create(user)
+  const product = { ...req.body };
+  Product.create(product)
     .then((data) => {
       res.status(201).json({
         status: "success",
-        message: "User created successfully",
+        message: "Product created successfully",
         payload: data,
       });
     })
@@ -32,7 +32,7 @@ const getProducts: RequestHandler = (req: Request, res: Response) => {
     .then((data: Product[]) => {
       res.status(200).json({
         status: "success",
-        message: "Users retrieved successfully",
+        message: "Product retrieved successfully",
         payload: data,
       });
     })
@@ -50,50 +50,60 @@ const getProductByCategory: RequestHandler = (req: Request, res: Response) => {
     .then((data: Product[]) => {
       return res.status(200).json({
         status: "success",
-        message: "User retrieved successfully",
+        message: "Product retrieved successfully",
         payload: data,
       });
     })
     .catch((err) => {
       res.status(500).json({
         status: "error",
-        message: "Error retrieving user",
+        message: "Error retrieving products",
         payload: err,
       });
     });
 };
 
-const updateProduct: RequestHandler = (req: Request, res: Response) => {
-  if (!req.body) {
+const updateProduct: RequestHandler = async (req: Request, res: Response) => {
+  const id = parseInt(req.params.id);
+
+  if (isNaN(id)) {
     res.status(400).json({
       status: "error",
-      message: "Content cannot be empty!",
+      message: "Invalid product ID",
+      payload: null,
+    });
+    return;
+  }
+  const { id: _, ...data } = req.body;
+
+  console.log("Updating product with ID:", id);
+  console.log("Data to update:", data);
+
+  try {
+    const [updatedRows] = await Product.update(data, { where: { id } });
+
+    if (updatedRows === 0) {
+      res.status(404).json({
+        status: "error",
+        message: "Product not found or no changes applied",
+        payload: null,
+      });
+      return;
+    }
+
+    res.status(200).json({
+      status: "success",
+      message: "Product updated successfully",
+      payload: { id, ...data },
+    });
+  } catch (error) {
+    console.error("Error updating product:", error);
+    res.status(500).json({
+      status: "error",
+      message: "Error updating product",
       payload: null,
     });
   }
-  Product.update(req.body, { where: { id: req.params.id } })
-    .then((isUpdated) => {
-      if (isUpdated) {
-        res.status(200).json({
-          status: "success",
-          message: "User updated successfully",
-          payload: { ...req.body },
-        });
-      } else {
-        res.status(500).json({
-          status: "error",
-          message: "Error updating user",
-          payload: null,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({
-        status: "error",
-        message: "Error updating user",
-        payload: null,
-      });
-    });
 };
 
 const deleteProduct: RequestHandler = (req: Request, res: Response) => {
@@ -102,13 +112,13 @@ const deleteProduct: RequestHandler = (req: Request, res: Response) => {
       if (isDeleted) {
         res.status(200).json({
           status: "success",
-          message: "User deleted successfully",
+          message: "Product deleted successfully",
           payload: null,
         });
       } else {
         res.status(500).json({
           status: "error",
-          message: "Error deleting user",
+          message: "Error deleting product",
           payload: null,
         });
       }
@@ -116,7 +126,7 @@ const deleteProduct: RequestHandler = (req: Request, res: Response) => {
     .catch((err) => {
       res.status(500).json({
         status: "error",
-        message: "Error deleting user",
+        message: "Error deleting product",
         payload: null,
       });
     });

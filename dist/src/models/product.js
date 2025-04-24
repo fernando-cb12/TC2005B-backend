@@ -15,7 +15,10 @@ let Product = class Product extends sequelize_typescript_1.Model {
 };
 exports.Product = Product;
 __decorate([
-    sequelize_typescript_1.Column,
+    (0, sequelize_typescript_1.Column)({
+        primaryKey: true,
+        autoIncrement: true,
+    }),
     __metadata("design:type", Number)
 ], Product.prototype, "id", void 0);
 __decorate([
@@ -34,7 +37,6 @@ __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", Number)
 ], Product.prototype, "stock", void 0);
-
 __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", String)

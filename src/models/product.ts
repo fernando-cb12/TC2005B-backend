@@ -17,8 +17,8 @@ export class Product
   implements ProductAttributes
 {
   @Column({
-    primaryKey: true, // Add this line
-    // other attributes...
+    primaryKey: true,
+    autoIncrement: true,
   })
   id!: number;
 
