@@ -16,7 +16,7 @@ export class User extends Model<UserAttributes, userCreationAttributes> {
   name!: string;
 
   @Column
-  emai?: string;
+  email?: string;
 
   @Column
   password!: string;
